@@ -9,10 +9,12 @@ function App() {
   const [position, setPosition] = useState("");
   const [wage, setWage] = useState(0);
 
+  const [newWage, setNewWage] = useState(0);
+
   const [employeeList, setEmployeeList] = useState([]);
 
   const addEmployee = () => {
-    Axios.post("http://localhost:3001/create", {
+    Axios.post("http://localhost:3002/create", {
       name: name,
       age: age,
       country: country,
@@ -34,8 +36,39 @@ function App() {
   };
 
   const getEmployees = () => {
-    Axios.get("http://localhost:3001/employees").then((response) => {
+    Axios.get("http://localhost:3002/employees").then((response) => {
       setEmployeeList(response.data);
+    });
+  };
+
+  const updateWage = (id) => {
+    Axios.put("http://localhost:3002/update", { wage: newWage, id: id }).then(
+      (response) => {
+        setEmployeeList(
+          employeeList.map((val) => {
+            return val.id == id
+              ? {
+                  id: val.id,
+                  name: val.name,
+                  country: val.country,
+                  age: val.age,
+                  position: val.position,
+                  wage: newWage,
+                }
+              : val;
+          })
+        );
+      }
+    );
+  };
+
+  const deleteEmployee = (id) => {
+    Axios.delete(`http://localhost:3002/delete/${id}`).then((response) => {
+      setEmployeeList(
+        employeeList.filter((val) => {
+          return val.id !== id;
+        })
+      );
     });
   };
 
@@ -72,7 +105,7 @@ function App() {
         />
         <label>Wage (year): </label>
         <input
-          type="number"
+          type="text"
           onChange={(event) => {
             setWage(event.target.value);
           }}
@@ -86,15 +119,42 @@ function App() {
         {employeeList.map((val, key) => {
           return (
             <div className="employee">
-              <strong>Name: {val.name}</strong>
-              <br />
-              <strong>Age: {val.age}</strong>
-              <br />
-              <strong>Country: {val.country}</strong>
-              <br />
-              <strong>Position: {val.position}</strong>
-              <br />
-              <strong>Wage: {val.wage}</strong>
+              <div>
+                <strong>Name: {val.name}</strong>
+                <br />
+                <strong>Age: {val.age}</strong>
+                <br />
+                <strong>Country: {val.country}</strong>
+                <br />
+                <strong>Position: {val.position}</strong>
+                <br />
+                <strong>Wage: {val.wage}</strong>
+                <br />
+              </div>
+              <div>
+                <input
+                  type="number"
+                  placeholder="$2000"
+                  onChange={(event) => {
+                    setNewWage(event.target.value);
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    updateWage(val.id);
+                  }}
+                >
+                  Update
+                </button>
+
+                <button
+                  onClick={() => {
+                    deleteEmployee(val.id);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           );
         })}

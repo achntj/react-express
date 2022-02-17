@@ -46,7 +46,7 @@ function App() {
       (response) => {
         setEmployeeList(
           employeeList.map((val) => {
-            return val.id == id
+            return val.id === id
               ? {
                   id: val.id,
                   name: val.name,
@@ -74,90 +74,112 @@ function App() {
 
   return (
     <div className="App">
-      <div className="information">
-        <label>Name: </label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-        />
-        <label>Age: </label>
-        <input
-          type="number"
-          onChange={(event) => {
-            setAge(event.target.value);
-          }}
-        />
-        <label>Country: </label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setCountry(event.target.value);
-          }}
-        />
-        <label>Position: </label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setPosition(event.target.value);
-          }}
-        />
-        <label>Wage (year): </label>
-        <input
-          type="text"
-          onChange={(event) => {
-            setWage(event.target.value);
-          }}
-        />
-        <button onClick={addEmployee}>Add Employee</button>
+      <div className="header">
+        <div className="title">
+          <h1>EmployeeDB.com</h1>
+        </div>
       </div>
-      <hr />
-      <div className="employees">
-        <button onClick={getEmployees}>Show Employees</button>
+      <div className="page">
+        <div className="create-new">
+          <h2>Add a New Employee</h2>
+          <label>Name: </label>
+          <input
+            type="text"
+            onChange={(event) => {
+              setName(event.target.value);
+            }}
+          />
+          <br />
+          <label>Age: </label>
+          <input
+            type="number"
+            onChange={(event) => {
+              setAge(event.target.value);
+            }}
+          />
+          <br />
+          <label>Country: </label>
+          <input
+            type="text"
+            onChange={(event) => {
+              setCountry(event.target.value);
+            }}
+          />
+          <br />
+          <label>Position: </label>
+          <input
+            type="text"
+            onChange={(event) => {
+              setPosition(event.target.value);
+            }}
+          />
+          <br />
+          <label>Wage (year): </label>
+          <input
+            type="text"
+            onChange={(event) => {
+              setWage(event.target.value);
+            }}
+          />
+          <br />
+          <button onClick={addEmployee}>Add Employee</button>
+        </div>
+        <hr />
+        <div className="employees">
+          <button onClick={getEmployees}>Show Employees</button>
 
-        {employeeList.map((val, key) => {
-          return (
-            <div className="employee">
-              <div>
-                <strong>Name: {val.name}</strong>
-                <br />
-                <strong>Age: {val.age}</strong>
-                <br />
-                <strong>Country: {val.country}</strong>
-                <br />
-                <strong>Position: {val.position}</strong>
-                <br />
-                <strong>Wage: {val.wage}</strong>
-                <br />
-              </div>
-              <div>
-                <input
-                  type="number"
-                  placeholder="$2000"
-                  onChange={(event) => {
-                    setNewWage(event.target.value);
-                  }}
-                />
-                <button
-                  onClick={() => {
-                    updateWage(val.id);
-                  }}
-                >
-                  Update
-                </button>
+          {employeeList.map((val, key) => {
+            return (
+              <div className="employee">
+                <div>
+                  <strong>Name: </strong>
+                  {val.name}
+                  <br />
+                  <strong>Age:</strong> {val.age}
+                  <br />
+                  <strong>Country: </strong>
+                  {val.country}
+                  <br />
+                  <strong>Position: </strong>
+                  {val.position}
+                  <br />
+                  <strong>Wage: </strong>
+                  {val.wage}
+                  <br />
+                </div>
+                <div>
+                  <input
+                    type="number"
+                    placeholder="$2000"
+                    onChange={(event) => {
+                      setNewWage(event.target.value);
+                    }}
+                  />
+                  <br />
+                  <div className="btn-container">
+                    <button
+                      onClick={() => {
+                        updateWage(val.id);
+                      }}
+                      className="green"
+                    >
+                      Update
+                    </button>
 
-                <button
-                  onClick={() => {
-                    deleteEmployee(val.id);
-                  }}
-                >
-                  Delete
-                </button>
+                    <button
+                      onClick={() => {
+                        deleteEmployee(val.id);
+                      }}
+                      className="red"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
